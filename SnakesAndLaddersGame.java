@@ -2,13 +2,16 @@ import java.util.Random;
 
 public class SnakesAndLaddersGame{
 	static int FirstPlayer=0;
+	static int RollDieCount=0;
 	private static Random random = new Random();
 
 	public void rollDie(){
 		int roll = random.nextInt(6)+1;
+		RollDieCount+=1;
 		System.out.println("Position of First Player is "+FirstPlayer);
 		if(FirstPlayer==100){
 			System.out.println("First Player Won");
+			System.out.println("Die Roll Count is "+RollDieCount);
 			System.exit(1);
 		}else if(FirstPlayer+roll>100){
 			System.out.println("Invalid Move");
