@@ -10,6 +10,10 @@ public class SnakesAndLaddersGame{
 		if(FirstPlayer==100){
 			System.out.println("First Player Won");
 			System.exit(1);
+		}else if(FirstPlayer+roll>100){
+			System.out.println("Invalid Move");
+			roll=0;
+			FirstPlayer+=roll;
 		}else{
 			FirstPlayer+=roll;
 			System.out.println("First Player rolls a die of "+roll);
