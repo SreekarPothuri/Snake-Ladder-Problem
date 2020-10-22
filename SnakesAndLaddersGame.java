@@ -7,8 +7,13 @@ public class SnakesAndLaddersGame{
 	public void rollDie(){
 		int roll = random.nextInt(6)+1;
 		System.out.println("Position of First Player is "+FirstPlayer);
-		FirstPlayer+=roll;
-		System.out.println("First Player rolls a die of "+roll);
+		if(FirstPlayer==100){
+			System.out.println("First Player Won");
+			System.exit(1);
+		}else{
+			FirstPlayer+=roll;
+			System.out.println("First Player rolls a die of "+roll);
+		}
 	}
 
 	public void snakes(){
