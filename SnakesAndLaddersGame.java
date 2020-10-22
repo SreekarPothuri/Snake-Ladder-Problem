@@ -6,20 +6,7 @@ public class SnakesAndLaddersGame{
 
 	public void RollDie(){
 		int roll = random.nextInt(6)+1;
-		System.out.println("Position of First Player is "+FirstPlayer);
-			if(FirstPlayer==100){
-				System.out.println("First Player Won");
-				System.exit(1);
-			}
-			else if(FirstPlayer+roll>100){
-				System.out.println("Invalid Move");
-				roll=0;
-				FirstPlayer+=roll;
-			}
-			else{
-				FirstPlayer+=roll;
-				System.out.println("First Player rolled die of "+roll);
-			}
+		System.out.println("Position of First Player is "+FirstPlayer);	
 	}
 	public void game(){
 		while(true){
