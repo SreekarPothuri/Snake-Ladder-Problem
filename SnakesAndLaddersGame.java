@@ -1,108 +1,94 @@
 import java.util.Random;
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SnakesAndLaddersGame{
-	static int FirstPlayer=0;
-	static int RollDieCount=0;
-	private static Random random = new Random();
+	final static int WIN_POINT = 100;
+	static Map<Integer,Integer> snake = new HashMap<Integer,Integer>();
+	static Map<Integer,Integer> ladder = new HashMap<Integer,Integer>();
+	{
+		snake.put(96,68);
+		snake.put(72,54);
+		snake.put(52,35);
+		snake.put(25,2);
+		snake.put(97,44);
 
-	public void rollDie(){
-		int roll = random.nextInt(6)+1;
-		RollDieCount+=1;
-		System.out.println("Position of First Player is "+FirstPlayer);
-		if(FirstPlayer==100){
-			System.out.println("First Player Won");
-			System.out.println("Die Roll Count is "+RollDieCount);
-			System.exit(1);
-		}else if(FirstPlayer+roll>100){
-			System.out.println("Invalid Move");
-			roll=0;
-			FirstPlayer+=roll;
-		}else{
-			FirstPlayer+=roll;
-			System.out.println("First Player rolls a die of "+roll);
-		}
+		ladder.put(6,24);
+		ladder.put(11,40);
+		ladder.put(60,85);
+		ladder.put(46,90);
+		ladder.put(17,69);
 	}
 
-	public void snakes(){
-		/* 17-7 54-34 62-19 64-60 87-24 93-73 95-75 99-78*/
-		if(FirstPlayer==17){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=7;
-		}
-		if(FirstPlayer==54){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=34;
-		}
-		if(FirstPlayer==62){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=19;
-		}
-		if(FirstPlayer==64){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=60;
-		}
-		if(FirstPlayer==87){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=24;
-		}
-		if(FirstPlayer==93){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=73;
-		}
-		if(FirstPlayer==95){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=75;
-		}
-		if(FirstPlayer==99){
-			System.out.println("Opps!,You Landed on Snake");
-			FirstPlayer=78;
-		}
+	public int rollDice(){
+		int roll = 0;
+		Random random = new Random();
+		roll = random.nextInt(7);
+		return (roll==0?1:roll);
 	}
-	public void ladders(){
-		/* 4-14  9-31  20-38 28-84 40-59 51-67 63-81 71-91 */
-		if(FirstPlayer==4){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=14;
+
+	public int calculatePlayerValue(int player,int diceValue){
+		player = player + diceValue;
+		if(player>WIN_POINT){
+			player=player-diceValue;
+			return player;
 		}
-		if(FirstPlayer==9){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=31;
+		if(null!=snake.get(player)){
+			System.out.println("Oops!!You landed on Snake");
+			player=snake.get(player);
 		}
-		if(FirstPlayer==20){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=38;
+		if(null!=ladder.get(player)){
+			System.out.println("Yay!!You landed on Ladder");
+			player=ladder.get(player);
 		}
-		if(FirstPlayer==28){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=84;
-		}
-		if(FirstPlayer==40){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=59;
-		}
-		if(FirstPlayer==51){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=67;
-		}
-		if(FirstPlayer==63){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=81;
-		}
-		if(FirstPlayer==71){
-			System.out.println("Yay!,You Landed on Ladder");
-			FirstPlayer=91;
-		}
+		return player;
 	}
-	public void game(){
-		while(true){
-			rollDie();
-			snakes();
-			ladders();
-		}
+
+	public boolean win(int player){
+		return WIN_POINT == player;
 	}
+
+	public void startGame(){
+		int player1=0,player2=0;
+		int currentPlayer=-1;
+		Scanner s = new Scanner(System.in);
+		String str;
+		int diceValue=0;
+		do{
+			System.out.println(currentPlayer==-1?"\nFIRST PLAYER TURN: " : "\nSECOND PLAYER TURN: ");
+			System.out.println("Press r to roll dice");
+			str = s.next();
+			diceValue = rollDice();
+
+			if(currentPlayer == -1){
+				player1 = calculatePlayerValue(player1,diceValue);
+				System.out.println("First Player: "+player1);
+				System.out.println("Second Player: "+player2);
+				System.out.println("----------------");
+				if(win(player1)){
+					System.out.println("First Player Won!! ");
+					return;
+				}
+			}else{
+				player2 = calculatePlayerValue(player2,diceValue);
+				System.out.println("First Player: "+player1);
+				System.out.println("Second Player: "+player2);
+				System.out.println("----------------");
+				if(win(player2)){
+					System.out.println("Second Player Won!! ");
+					return;
+				}
+			}
+			currentPlayer=-currentPlayer;
+		}while("r".equals(str));
+	}
+
 	public static void main(String args[]){
-		System.out.println("*****WELCOME TO SNAKES AND LADDERS GAME*****");
-		SnakesAndLaddersGame player = new SnakesAndLaddersGame();
-		player.game();
+		System.out.println("*****WELCOME TO SNAKE AND LADDERS GAME*****");
+		SnakesAndLaddersGame s = new SnakesAndLaddersGame();
+		s.startGame();
 	}
 }
+
+
